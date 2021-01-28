@@ -91,33 +91,29 @@ const logout = document.querySelector('#logout');
 logout.addEventListener('click', (e) => {
     e.preventDefault();
     auth.signOut();
-    clearLogs();        // this works the first time, the problem is then it always stays
+    setupLogs([]);  // trying this - Thurs afternoon 
+   // clearLogs();        // this works the first time, the problem is then it always stays
 });
 
 
 // create new student tutoring log
-const createForm = document.querySelector('#create-form');
-createForm.addEventListener('submit', (e) => {
+const addForm = document.querySelector('#add-form');
+addForm.addEventListener('submit', (e) => {
     e.preventDefault();
     db.collection('logs').add({
-        name: createForm['name'].value,
-        time: createForm['time'].value
+        name: addForm['name'].value,
+        time: addForm['time'].value
     }).then(()=> {
         // close modal and reset after data has been added
-        const modal = document.querySelector('#modal-create');
+        const modal = document.querySelector('#modal-add');
         M.Modal.getInstance(modal).close();
-        createForm.reset(); 
+        addForm.reset(); 
     }).catch(err => {
         console.log(err.message);
         // this will catch any errors that might come back from firebase when I try to 
         // add, and if it doesn't work, then it will log the error message
     })
 })
-
-
-
-
-
 
 
 // setup materialize components

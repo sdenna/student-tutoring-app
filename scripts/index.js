@@ -14,6 +14,13 @@ const setupUI = (user) => {
     // toggle UI elements with a forEach loop that will change the display to show or hide them
     loggedInLinks.forEach(item => item.style.display = 'block');  // show
     loggedOutLinks.forEach(item => item.style.display = 'none');  // hide
+
+    // if logged in AND no data
+     if (logList.innerHTML.startsWith('<h5')) {
+       console.log(logList.innerHTML);
+       logList.innerHTML = "Please enter student log data";
+     }
+
   }
   else {
     loggedInLinks.forEach(item => item.style.display = 'none');  // hide
@@ -30,11 +37,6 @@ const setupUI = (user) => {
 const form = document.querySelector('#create-form');
 
 function renderLog(doc) {
-    // if the user just logged in, this clears the message telling them
-    // to log in
-    if (logList.innerHTML.startsWith('<h5')) {
-       logList.innerHTML = "";
-     }
   
     let li = document.createElement('li');
     let name = document.createElement('span');
@@ -69,7 +71,7 @@ function renderLog(doc) {
 
 // clear log display on log out OR if not logged in
 const clearLogs = () => {
-  logList.innerHTML = '<h5 class = "center-align">Login to view Work Logs</h5>'
+  logList.innerHTML = '<h5 class = "center-align">Login to view Student Tutoring Logs</h5>'
 }
   const setupLogs = (data) => {
     // check if data has length to display.  If it does, then go through the data
@@ -80,7 +82,7 @@ const clearLogs = () => {
      }
   
     else {
-      logList.innerHTML = '<h5 class = "center-align">Login to view work logs- TEST</h5>'
+      logList.innerHTML = '<h5 class = "center-align">Login Please</h5>'
     }
   }
 
