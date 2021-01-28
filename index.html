@@ -2,6 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
      <!-- Compiled and minified CSS from the materialize website, font from Google, and my external stylesheet -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Ubuntu:regular,bold&subset=Latin">
@@ -10,17 +11,14 @@
   <title>Student Tutoring Log</title>
 </head>
 <body class="grey lighten-3">
-
-  <div>
-    <!-- I want my image to move and this is annoying me!!!!-->  
-    <a href="#" class="brand-logo">
-      <img src="DennaComputer.png" style=" width: 180px; margin-left: 50px;"> 
+<!-- NAVBAR This styling is from materialize - I'm not a pro on this by any means, just getting started 
+         https://materializecss.com/navbar.html  SO many cool options, def play around with these!
+  -->
+  <nav class="nav-wrapper z-depth-0 grey lighten-4">
+    <a href="#" class="brand-logo left">
+      <img src="DennaComputer.png" style=" width: 100px; margin-left: 40px"> 
     </a>
-  </div>
-    <!-- NAVBAR This stuff is from materialize styles - I'm not a pro on this by any means -->
-  <nav class="z-depth-1 grey lighten-4">
-      <div class="nav-wrapper container">
-      <ul id="nav-mobile" >
+      <ul id="nav-mobile" class="right" >
          
           <li class="logged-out" style="display: block">
             <a href="#" class="grey-text modal-trigger" data-target="modal-login">Login</a>
@@ -50,6 +48,23 @@
       </div>
 
 
+  <!-- LOGIN MODAL -->
+  <div id="modal-login" class="modal">
+    <div class="modal-content">
+      <h4>Login</h4><br />
+      <form id="login-form">
+        <div class="input-field">
+          <input type="email" id="login-email" required />
+          <label for="login-email">Email address</label>
+        </div>
+        <div class="input-field">
+          <input type="password" id="login-password" required />
+          <label for="login-password">Your password</label>
+        </div>
+        <button class="btn blue darken-2 z-depth-0">Login</button>
+      </form>
+    </div>
+  </div>
 
    <!-- SIGN UP MODAL -->
    <div id="modal-signup" class="modal">
@@ -70,43 +85,23 @@
   </div>
   
 
-    <!-- LOGIN MODAL -->
-    <div id="modal-login" class="modal">
-        <div class="modal-content">
-          <h4>Login</h4><br />
-          <form id="login-form">
-            <div class="input-field">
-              <input type="email" id="login-email" required />
-              <label for="login-email">Email address</label>
-            </div>
-            <div class="input-field">
-              <input type="password" id="login-password" required />
-              <label for="login-password">Your password</label>
-            </div>
-            <button class="btn blue darken-2 z-depth-0">Login</button>
-          </form>
-        </div>
-      </div>
-
-
-
-    <!-- ADD STUDENT MODAL -->
-    <div id="modal-create" class="modal">
-        <div class="modal-content">
-        <h4>Add Student to Log</h4><br />
-        <form id="create-form">
-            <div class="input-field">
+  <!-- ADD STUDENT MODAL -->
+   <div id="modal-create" class="modal">
+       <div class="modal-content">
+       <h4>Add Student to Log</h4><br />
+       <form id="create-form">
+           <div class="input-field">
             <input type="text" id="name" required>
-            <label for="title">Student Name</label>
-            </div>
-            <div class="input-field">
-            <textarea id="time" class="materialize-textarea" required></textarea>
-            <label for="content">Hours Tutored</label>
-            </div>
-            <button class="btn blue darken-2 z-depth-0">Create</button>
-        </form>
-        </div>
-    </div>
+             <label for="title">Student Name</label>
+           </div>
+           <div class="input-field">
+             <textarea id="time" class="materialize-textarea" required></textarea>
+              <label for="content">Hours Tutored</label>
+           </div>
+          <button class="btn blue darken-2 z-depth-0">Create</button>
+      </form>
+      </div>
+  </div>
 
      
 

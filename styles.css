@@ -20,7 +20,7 @@ body{
     
     margin-right: 10px;
     font-size: 14px;
-    color: #1AB090;
+    color: #025593;
     cursor:  pointer;
     position: absolute;
     right: 5px;
@@ -31,7 +31,7 @@ body{
     width: 100px;
     margin-right: 10px;
     font-size: 14px;
-    color: #3598DA;
+    color: #025593;
     cursor:  pointer;
 }
 
@@ -45,7 +45,7 @@ body{
 
 ul{
     list-style-type: none;
-    padding: 0;
+    
 }
 
 li{
@@ -53,8 +53,7 @@ li{
     background: #f6f6f6;
     font-size: 14px;
     color: rgba(26, 25, 25, 0.879);  
-    position: relative;
-    border-bottom: 2px solid #025593;
+    border-bottom: 2px solid #717474;
     height: 46px;
 }
 
