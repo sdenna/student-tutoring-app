@@ -13,6 +13,8 @@
 <body class="grey lighten-3">
 <!-- NAVBAR This styling is from materialize - I'm not a pro on this by any means, just getting started 
          https://materializecss.com/navbar.html  SO many cool options, def play around with these!
+         Right now, I am not super happy with this as I think it only looks good on mobile, but this isn't
+         the purpose of the lesson, so I am going to leave it as is and demonstrate how a work in progress looks!
   -->
   <nav class="nav-wrapper z-depth-0 grey lighten-4">
     <a href="#" class="brand-logo left">
@@ -38,7 +40,8 @@
 
 
 
-    <!-- LIST OF STUDENTS TUTORED We will get this from the database -->
+    <!-- LIST OF STUDENTS TUTORED We will get this content programmatically
+         from the database using a method called renderLog() in index.js -->
     <div class="container" style="margin-top: 40px;">
         <ul class="z-depth-0 logs" style="border: none;">   
        
@@ -104,6 +107,7 @@
      
 
   <!-- THIS IS WHERE YOU COPY / PASTE THE FIREBASE SDK INFO and add the firestore SDK-->
+
   <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-auth.js"></script>
@@ -125,17 +129,18 @@
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
 
+      
       const auth = firebase.auth();
       const db = firebase.firestore();
     </script>
 
 
 
-  <!-- this is needed if you want to use the materialize database -->
+  <!-- this is needed if you want to use the materialize database.  If you don't use it, then this can be deleted -->
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   
-  <!-- this is linking the external js files we have.  Notice they are in their own folder-->
+  <!-- this links the external js files we have.  Notice they are in their own folder-->
     <script src="scripts/auth.js"></script>
     <script src="scripts/index.js"></script>
 

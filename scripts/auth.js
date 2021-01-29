@@ -1,16 +1,35 @@
 /*
 This file will contain all the JS that will communicate with 
-the firebase firestore database and also firebase auth
+the firebase firestore database and also firebase auth that is needed to authenticate
+authorized users.  If you don't use auth, then some of this code is not needed.
 */
 
 
 // real-time listener
 auth.onAuthStateChanged(user => {
-    //  if the user was logged out, then user will be null
-    //  if they were logged in, then we will see the email of who the user is
+    //  if the user was logged out, then user parameter will be null
+    //  if the user is logged in, then user parameter will equal a reference to their account (auth token)
+
         if (user) {
         // get data if a valid user is logged in
-            setupUI(user);      // display correct links
+            setupUI(user);      // display correct links in navbar based on login status
+
+            /*
+            In this section of code, we are getting the logs collection and then calling the onSnapshot method.
+            This will grab a current snapshot of the state of the database.  This is done every time there is a
+            change to the database, but only if the user is logged in.
+
+            The parameter snapshot refers to a current static copy of the database at this exact moment in time.
+            docChanges is a method that is called of the snapshot and we are using a for each loop to cycle through
+            all the changes for each entry of the log.  If the change was 'added', we need to call renderLog to add a 
+            new Student <li> entry to our display.  If the change was 'removed', we need to query that specific <li> tag
+            from the DOM and remove it so it is removed from the display.  If you were also allowing the display to update
+            in realtime, then you would have another option here for 'modified'.
+
+            The else statement for the top function is what to do if the user is NOT logged in.  In this case
+            we want to make sure that the logs do NOT display and that the UI displays the appropriate links to Log in or 
+            Sign up
+            */
             db.collection('logs').onSnapshot(snapshot => {
                 let changes = snapshot.docChanges();
                 // based on change made, either add to display or remove from display
@@ -35,6 +54,24 @@ auth.onAuthStateChanged(user => {
         }
     });
 
+
+/*
+    In this section of code we are first getting a reference to the login form in the DOM
+    We then add an action listener so that we are ready for changes made and when the user
+    submits the action to log in, we are telling it how to act.
+
+    We get the values entered into the form using the array notation to access the properties
+    of the form using the id value of each <input> tag and then accessing the value at that spot
+
+    We then call the signIn method for firebase auth.  This is an async method, meaning it 
+    takes some time to do (not much, but it isn't instantaneous), so we need our program to pause
+    until it is done.  The way we do that, is we tack on a .then() function after the signIn
+
+    When signInWithEmailAndPassword is done, it returns a promise, essentially that it is done.
+    When that happens, we want to query a reference to the modal in the DOM, and using the
+    materialize library methods, close the modal and reset the login form so it is blank the 
+    next time someone tries to log in
+*/
 
 // login
 const loginForm = document.querySelector('#login-form');
