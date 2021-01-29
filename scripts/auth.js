@@ -1,11 +1,11 @@
 /*
+LISTENS FOR CHANGE OF AUTH STATE AND HANDLES CHANGE ACCORDINGLY WITH REALTIME LISTENER
+
 This file will contain all the JS that will communicate with 
 the firebase firestore database and also firebase auth that is needed to authenticate
 authorized users.  If you don't use auth, then some of this code is not needed.
 */
 
-
-// real-time listener
 auth.onAuthStateChanged(user => {
     //  if the user was logged out, then user parameter will be null
     //  if the user is logged in, then user parameter will equal a reference to their account (auth token)
@@ -18,6 +18,10 @@ auth.onAuthStateChanged(user => {
             In this section of code, we are getting the logs collection and then calling the onSnapshot method.
             This will grab a current snapshot of the state of the database.  This is done every time there is a
             change to the database, but only if the user is logged in.
+
+            Because we are using the onSnapshot method, this will execute every time there is a change to the database.  
+            This will be what causes our web app to update in real time.  So IF the user is logged in, and a change is made,
+            then the user will see it on the web app.
 
             The parameter snapshot refers to a current static copy of the database at this exact moment in time.
             docChanges is a method that is called of the snapshot and we are using a for each loop to cycle through
@@ -49,16 +53,19 @@ auth.onAuthStateChanged(user => {
             });
         }
         else {
-            setupLogs([]);
             setupUI();  // don't send anything so it will evaluate to false in the method
+            setupLogs([]);
         }
     });
 
 
 /*
+    LOGIN FUNCTIONALITY
+
     In this section of code we are first getting a reference to the login form in the DOM
     We then add an action listener so that we are ready for changes made and when the user
-    submits the action to log in, we are telling it how to act.
+    submits the action to log in, we are telling it how to act.  We tell it to prevent the
+    default action of a refresh/reload after the submit button was pressed.
 
     We get the values entered into the form using the array notation to access the properties
     of the form using the id value of each <input> tag and then accessing the value at that spot
@@ -73,10 +80,9 @@ auth.onAuthStateChanged(user => {
     next time someone tries to log in
 */
 
-// login
 const loginForm = document.querySelector('#login-form');
 loginForm.addEventListener('submit', (e) => {
-    e.preventDefault(); // prevents page from reloading
+    e.preventDefault();         // prevents page from reloading
 
     // get user info from the form
     const email = loginForm['login-email'].value;
@@ -84,7 +90,6 @@ loginForm.addEventListener('submit', (e) => {
 
     // use auth method with the email and password
     auth.signInWithEmailAndPassword(email, password).then(cred => {
-        
         // get a reference to the open modal
         const modal = document.querySelector('#modal-login');
         // using the Material library methods, we close the modal
@@ -94,46 +99,66 @@ loginForm.addEventListener('submit', (e) => {
     });
 });
 
+/*
+    SIGN UP FUNCTIONALITY
 
-// signup
-// first get a reference to the signup form in the DOM using its id "signup-form"
+    Very similar in description to the login form code.
+
+    We will sign up the user using a method from firebase auth services
+    This is an async task and therefore it takes a sec to complete
+    Because of that, we can tack on a .then function that will do something
+    AFTER this is completed.  In this case, that is when we close the modal
+    like we did for Login.
+*/
+
 const signupForm = document.querySelector('#signup-form');
 
-// When a user clicks the button, that will submit the form
 signupForm.addEventListener('submit', (e) => {
-    // first we want to prevent the default action of a refresh
-    // the event object (e) is automatically passed into the callback function
     e.preventDefault();
+   
     // get user info from the fields and pass in id of desired field inside [ ]
     const email = signupForm['signup-email'].value;
     const password = signupForm['signup-password'].value;
-
-    // sign up the user using a method from firebase auth services
-    // this is an async task and therefore it takes a sec to complete
-    // because of that, we can tack on a .then function that will do something
-    // AFTER this is completed.
-
+    
     auth.createUserWithEmailAndPassword(email, password).then(() => {
-         // get a reference to the open modal
          const modal = document.querySelector('#modal-signup');
-         // using the Material library methods, we close the modal
          M.Modal.getInstance(modal).close();
-         // call the JS method reset to clear the form
          signupForm.reset(); 
     });
 });
 
-// logout
+
+/*
+    LOG OUT FUNCTIONALITY
+
+    Adds a listener for when the user clicks the logout button 
+    Calls the sign out method for auth.  This will trigger the code
+    we already have set up for when their isn't a user logged in above in the 
+    auth section.
+*/
+
 const logout = document.querySelector('#logout');
 logout.addEventListener('click', (e) => {
     e.preventDefault();
     auth.signOut();
-    setupLogs([]);  // trying this - Thurs afternoon 
-   // clearLogs();        // this works the first time, the problem is then it always stays
 });
 
 
-// create new student tutoring log
+
+/*
+    ADD STUDENT FUNCTIONALITY
+
+    Listens for when the add student link is clicked, gets a reference to the 
+    form in the modal, gets the name and time from the form and uses the add
+    function of firestore to add this document to the collection 'logs'
+
+    The .next next functions lets the code know when this task is done, and 
+    then the modal is closed and cleared.
+
+    We also use a catch here to catch any errors that might have occurred when the add
+    function was called.  If there is an error, it is logged to the console.
+*/
+
 const addForm = document.querySelector('#add-form');
 addForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -141,26 +166,27 @@ addForm.addEventListener('submit', (e) => {
         name: addForm['name'].value,
         time: addForm['time'].value
     }).then(()=> {
-        // close modal and reset after data has been added
         const modal = document.querySelector('#modal-add');
         M.Modal.getInstance(modal).close();
         addForm.reset(); 
     }).catch(err => {
         console.log(err.message);
-        // this will catch any errors that might come back from firebase when I try to 
-        // add, and if it doesn't work, then it will log the error message
+        // this will catch any errors that might come back from firebase when trying
+        // to add, and if it doesn't work, then it will log the error message 
     })
 })
 
+/*
+    SET UP MATERIALIZE COMPONENTS
+    **  You only need this if you are using the Materialize styling and the code you
+    use here depends on the materialize components you need to set up.  Since I only used
+    modals, that is all I need to initialize.
 
-// setup materialize components
-// you only need this if you are using the Materialize styling 
+    This function is listening for when you load the DOM.  At that point, all the modals 
+    are queried.  Then, they are all initialized with the init function
+*/
+
 document.addEventListener('DOMContentLoaded', function() {
-
     var modals = document.querySelectorAll('.modal');
     M.Modal.init(modals);
-  
-    var items = document.querySelectorAll('.collapsible');
-    M.Collapsible.init(items);
-  
   });
