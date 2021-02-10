@@ -86,6 +86,11 @@ function renderLog(doc) {
    
     // we need to attach the UID to the li tag so that way if we need to 
     // access it later, we know which element it was
+
+    // I am adding the string id in front of the UID because if the UID starts with a 
+    // number instead of a letter, then it isn't a valid id and the query won't work when
+    // trying to update or delete the document in the database
+     
     const idVal = 'id' + doc.id;
     li.setAttribute('data-id', idVal);
 
