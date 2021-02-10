@@ -86,7 +86,8 @@ function renderLog(doc) {
    
     // we need to attach the UID to the li tag so that way if we need to 
     // access it later, we know which element it was
-    li.setAttribute('data-id', doc.id);
+    const idVal = 'id' + doc.id;
+    li.setAttribute('data-id', idVal);
 
     // Set the text for the elements to display
     name.textContent = doc.data().name;
@@ -106,7 +107,8 @@ function renderLog(doc) {
     // Add listener for the delete option
     deleteX.addEventListener('click', (e) => {
       e.stopPropagation();
-      let id = e.target.parentElement.getAttribute('data-id');  
+      var id = e.target.parentElement.getAttribute('data-id');  
+      id = id.substring(2);
       db.collection('logs').doc(id).delete();
     })
 

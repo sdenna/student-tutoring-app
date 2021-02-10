@@ -43,7 +43,9 @@ auth.onAuthStateChanged(user => {
                     }
                     else if (change.type == 'removed') {
                         // finding the li in the DOM of the document that was just removed
-                        let li = logList.querySelector('[data-id=' + change.doc.id + ']');
+                        const idToRemove = 'id' + change.doc.id;
+
+                        let li = logList.querySelector('[data-id=' + idToRemove + ']');
                         // remove this li from the ul
                         logList.removeChild(li);
                     }
