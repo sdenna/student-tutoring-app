@@ -6,6 +6,8 @@ the firebase firestore database and also firebase auth that is needed to authent
 authorized users.  If you don't use auth, then some of this code is not needed.
 */
 
+var unsubscribe;
+
 auth.onAuthStateChanged(user => {
     //  if the user was logged out, then user parameter will be null
     //  if the user is logged in, then user parameter will equal a reference to their account (auth token)
@@ -34,7 +36,8 @@ auth.onAuthStateChanged(user => {
             we want to make sure that the logs do NOT display and that the UI displays the appropriate links to Log in or 
             Sign up
             */
-            db.collection('logs').onSnapshot(snapshot => {
+           unsubscribe = db.collection('logs').onSnapshot(snapshot => {
+                
                 let changes = snapshot.docChanges();
                 // based on change made, either add to display or remove from display
                 changes.forEach(change => {
@@ -143,6 +146,7 @@ const logout = document.querySelector('#logout');
 logout.addEventListener('click', (e) => {
     e.preventDefault();
     auth.signOut();
+    unsubscribe();
 });
 
 
